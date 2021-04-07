@@ -1,46 +1,40 @@
 package com.app.restfull.service;
 
 import com.app.restfull.model.User;
+import com.app.restfull.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    private static final Map<Long, User> USER_REPOSITORY_MAP = new HashMap<>();
+    private final UserRepository userRepository;
 
-    private static final AtomicInteger USER_ID_HOLDER = new AtomicInteger();
-
-    public UserServiceImpl() {
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public void create(User user) {
-        final long userId = USER_ID_HOLDER.incrementAndGet();
-        user.setId(userId);
-        USER_REPOSITORY_MAP.put(userId, user);
+        userRepository.save(user);
     }
 
     @Override
     public List<User> readAll() {
-        return new ArrayList<>(USER_REPOSITORY_MAP.values());
+        return userRepository.findAll();
     }
 
     @Override
     public User read(long id) {
-        return USER_REPOSITORY_MAP.get(id);
+        return userRepository.getOne(id);
     }
 
     @Override
     public boolean update(User user, long id) {
-        if (USER_REPOSITORY_MAP.containsKey(id)) {
+        if (userRepository.existsById(id)) {
             user.setId(id);
-            USER_REPOSITORY_MAP.put(id, user);
+            userRepository.save(user);
             return true;
         }
 
@@ -49,6 +43,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean delete(long id) {
-        return USER_REPOSITORY_MAP.remove(id) != null;
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
