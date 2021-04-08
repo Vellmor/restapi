@@ -19,6 +19,16 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    private boolean active;
+
+    protected User() {}
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+        this.active = true;
+    }
+
     public long getId() {
         return id;
     }
@@ -41,5 +51,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
