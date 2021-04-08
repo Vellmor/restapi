@@ -43,7 +43,14 @@ public interface UserService {
 
     /**
      * Удаляет пользователя с заданным ID
-     * @param login - lpgin пользователя, которого нужно удалить
+     * @param id - ID пользователя, которого нужно удалить
+     * @return - true если пользователь был удален, иначе false
+     */
+    boolean delete(long id);
+
+    /**
+     * Удаляет пользователя с заданным login
+     * @param login - login пользователя, которого нужно удалить
      * @return - true если пользователь был удален, иначе false
      */
     boolean delete(String login);

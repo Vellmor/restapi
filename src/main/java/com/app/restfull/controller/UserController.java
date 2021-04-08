@@ -60,6 +60,15 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
+    @DeleteMapping(value = "/api/users/del/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") long id) {
+        final boolean deleted = userService.delete(id);
+
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
     @DeleteMapping(value = "/api/users/{login}")
     public ResponseEntity<?> delete(@PathVariable(name = "login") String login) {
         final boolean deleted = userService.delete(login);
