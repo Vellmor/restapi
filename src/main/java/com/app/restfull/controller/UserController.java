@@ -18,13 +18,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "/api/users")
     public ResponseEntity<?> create(@RequestBody User user) {
         userService.create(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/api/users")
     public ResponseEntity<List<User>> read() {
         final List<User> users = userService.readAll();
 
@@ -33,7 +33,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/users/{login}")
+    @GetMapping(value = "/api/users/{login}")
     public ResponseEntity<User> read(@PathVariable(name = "login") String login) {
         final User user = userService.readLogin(login);
 
@@ -42,7 +42,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/users/{login}:{password}")
+    @GetMapping(value = "/api/users/{login}:{password}")
     public ResponseEntity<User> read(@PathVariable(name = "login") String login, @PathVariable(name = "password") String password) {
         final User user = userService.readLoginPassword(login, password);
 
@@ -51,7 +51,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/users/{login}")
+    @PutMapping(value = "/api/users/{login}")
     public ResponseEntity<?> update(@PathVariable(name = "login") String login, @RequestBody User user) {
         final boolean updated = userService.update(user, login);
 
@@ -60,7 +60,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping(value = "/users/{login}")
+    @DeleteMapping(value = "/api/users/{login}")
     public ResponseEntity<?> delete(@PathVariable(name = "login") String login) {
         final boolean deleted = userService.delete(login);
 
