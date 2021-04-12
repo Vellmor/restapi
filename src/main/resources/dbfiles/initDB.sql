@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS users
 (
     id LONG AUTO_INCREMENT PRIMARY KEY,
-    login VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    login VARCHAR(20) NOT NULL,
+    password VARCHAR(10) NOT NULL,
     active BOOLEAN
 );

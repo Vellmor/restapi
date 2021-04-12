@@ -13,10 +13,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "login")
+    @Column(name = "login",columnDefinition = "varchar(20)")
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password",columnDefinition = "varchar(10)")
     private String password;
 
     private boolean active;
@@ -50,7 +50,13 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        int length = password.length();
+        if (length > 10){
+            this.password = password.substring(length-10, length);
+        } else {
+            this.password = password;
+        }
+
     }
 
     public boolean isActive() {

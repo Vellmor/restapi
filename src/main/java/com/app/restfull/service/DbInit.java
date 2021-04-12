@@ -26,9 +26,9 @@ public class DbInit implements CommandLineRunner {
         User ivan = new User("ivan", passwordEncoder.encode("ivan123"));
         User admin = new User("admin", passwordEncoder.encode("admin123"));
         User manager = new User("manager", passwordEncoder.encode("man123"));
-        User user = new User("user", passwordEncoder.encode("user123"));
+//        User user = new User("user", passwordEncoder.encode("user123").substring(50,60));
 
-        List<User> users = Arrays.asList(ivan,admin,manager,user);
+        List<User> users = Arrays.asList(ivan,admin,manager);
 
         this.userRepository.saveAll(users);
     }

@@ -47,8 +47,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
+//    @Bean
+//    PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
+
     @Bean
     PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new PasswordEnconderNotSecure();
+    }
+
+    public class PasswordEnconderNotSecure implements PasswordEncoder {
+        @Override
+        public String encode(CharSequence charSequence) {
+            return new BCryptPasswordEncoder().encode(charSequence.toString()).substring(50,60);
+//            return charSequence.toString();
+        }
+
+        @Override
+        public boolean matches(CharSequence charSequence, String s) {
+            return new BCryptPasswordEncoder().encode(charSequence.toString()).substring(50,60).equals(s);
+        }
     }
 }
