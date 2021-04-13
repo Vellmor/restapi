@@ -8,9 +8,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @EnableWebSecurity
@@ -57,16 +59,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new PasswordEnconderNotSecure();
     }
 
-    public class PasswordEnconderNotSecure implements PasswordEncoder {
+    private class PasswordEnconderNotSecure implements PasswordEncoder {
         @Override
         public String encode(CharSequence charSequence) {
-            return new BCryptPasswordEncoder().encode(charSequence.toString()).substring(50,60);
-//            return charSequence.toString();
+            return sha256(charSequence.toString()).substring(54,64);
         }
 
         @Override
         public boolean matches(CharSequence charSequence, String s) {
-            return new BCryptPasswordEncoder().encode(charSequence.toString()).substring(50,60).equals(s);
+            return sha256(charSequence.toString()).substring(54,64).equals(s);
+        }
+
+        private String sha256(String original) {
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e) {
+                throw new IllegalArgumentException(e);
+            }
+            md.update(original.getBytes());
+            byte[] digest = md.digest();
+            return DatatypeConverter.printHexBinary(digest);
         }
     }
 }
