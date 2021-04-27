@@ -6,10 +6,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
+    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -18,6 +23,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void create(User user) {
         userRepository.save(user);
+        logger.info("User {1} created", user.getLogin());
     }
 
     @Override
@@ -41,6 +47,7 @@ public class UserServiceImpl implements UserService{
             long id = userRepository.getUserByLogin(login).getId();
             user.setId(id);
             userRepository.save(user);
+            logger.info("User {1} updated", user.getLogin());
             return true;
         }
 
@@ -51,6 +58,7 @@ public class UserServiceImpl implements UserService{
     public boolean delete(long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
+            logger.info("User with id = {1} deleted", id);
             return true;
         }
         return false;
